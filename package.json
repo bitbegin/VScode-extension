@@ -19,7 +19,33 @@
                 "command": "extension.sayHello",
                 "title": "Hello World"
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Red Configuration",
+            "properties": {
+                "red.redPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to Red toolchain"
+                },
+                "red.buildDir": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Directory to put compiling result of Red Source file. If not set, use workspace root directory by default."
+                },
+                "red.devOptions": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Advanced options used to enable new features or produce detailed diagnostics to identify extension issues."
+                },
+                "red.autoComplete": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Whether to enable or disable autocompletion."
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -28,11 +54,14 @@
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
+    "dependencies": {
+        "vscode-languageclient": "^5.2.1"
+    },
     "devDependencies": {
         "typescript": "^3.2.2",
         "vscode": "^1.1.26",
         "tslint": "^5.11.0",
-        "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42"
+        "@types/node": "^10.12.15",
+        "@types/mocha": "^5.2.5"
     }
 }
