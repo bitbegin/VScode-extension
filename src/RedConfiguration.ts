@@ -50,6 +50,10 @@ function getRedConsole(gui: boolean) {
 }
 
 export class RedConfiguration {
+    private static redConfigs: RedConfiguration = new RedConfiguration();
+    public static getInstance(): RedConfiguration {
+        return RedConfiguration.redConfigs;
+    }
     public get IsAutoComplete(): boolean {
         return this._autoComplete;
     }
