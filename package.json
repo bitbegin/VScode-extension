@@ -14,7 +14,9 @@
         "onCommand:red.interpret",
         "onCommand:red.interpretGUI",
         "onCommand:red.compile",
-        "onCommand:red.compileGUI"
+        "onCommand:red.compileGUI",
+        "onCommand:reds.compile",
+        "onCommand:reds.compileGUI"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -55,11 +57,23 @@
                 "command": "red.compileGUI",
                 "title": "Compile Red Script in GUI mode",
                 "category": "Red"
+            },
+            {
+                "command": "reds.compile",
+                "title": "Compile Red/System Script",
+                "category": "Red/System"
+            },
+            {
+                "command": "reds.compileGUI",
+                "title": "Compile Red/System Script in GUI mode",
+                "category": "Red/System"
             }
         ],
         "keybindings": [
             {"command": "red.interpret",    "key": "F6"},
             {"command": "red.compile",      "key": "F7"},
+            {"command": "reds.interpret",    "key": "F6"},
+            {"command": "reds.compile",      "key": "F7"},
             {"command": "red.commandMenu",  "key": "ctrl+k ctrl+m"}
         ],
         "menus": {
@@ -73,6 +87,11 @@
               "when": "resourceLangId == red",
               "command": "red.compile",
               "group": "Red"
+            },
+            {
+                "when": "resourceLangId == reds",
+                "command": "reds.compile",
+                "group": "Red/System"
             }
           ],
           "explorer/context": [
@@ -85,6 +104,11 @@
               "when": "resourceLangId == red",
               "command": "red.compile",
               "group": "Red"
+            },
+            {
+                "when": "resourceLangId == reds",
+                "command": "reds.compile",
+                "group": "Red/System"
             }
           ]
         },
