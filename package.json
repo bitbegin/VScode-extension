@@ -3,6 +3,14 @@
     "displayName": "RedLangServer",
     "description": "Red language server",
     "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/red/VScode-extension"
+    },
+    "bugs": {
+        "url": "https://github.com/red/VScode-extension/issues"
+    },
+    "icon": "images/icon.png",
     "engines": {
         "vscode": "^1.30.0"
     },
