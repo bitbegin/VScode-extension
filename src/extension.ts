@@ -9,7 +9,7 @@ import {redRunInConsole, redRunInGuiConsole, redCompileInConsole, redCompileInGu
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	let config = RedConfiguration.getInstance();
-	console.log(config.IsAutoComplete.toString());
+	console.log(config.isAutoComplete.toString());
 	console.log(config.redToolChain.toString());
 	console.log(config.redConsole.toString());
 	console.log(config.redGuiConsole.toString());

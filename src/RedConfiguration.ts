@@ -1,7 +1,6 @@
 'use strict';
 
 import { workspace, WorkspaceConfiguration } from 'vscode';
-import { RevealOutputChannelOn } from 'vscode-languageclient';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -29,7 +28,7 @@ function getRedConsole(gui: boolean) {
 	}
 	try {
 		let files = fs.readdirSync(preBuiltPath);
-		let console = '';
+		let _console = '';
 		let startsWith = 'console';
 		if (gui) {startsWith = 'gui-console'}
 		for (let i in files) {
@@ -37,12 +36,12 @@ function getRedConsole(gui: boolean) {
 			let ext = path.extname(name);
 			let console_path = path.join(preBuiltPath, name);
 			if (name.startsWith(startsWith) && (ext == '.exe' || ext == '')) {
-				if (console < console_path) {
-					console = console_path
+				if (_console < console_path) {
+					_console = console_path
 				}
 			}
 		}
-		return console;
+		return _console;
 	}
 	catch (err) {
 		return '';
@@ -54,39 +53,32 @@ export class RedConfiguration {
 	public static getInstance(): RedConfiguration {
 		return RedConfiguration.redConfigs;
 	}
-	public get IsAutoComplete(): boolean {
-		return this._autoComplete;
+	public get isAutoComplete(): boolean {
+		return this.configuration.get<boolean>('red.autoComplete', true);
 	}
 
 	public get redToolChain(): string {
-		return this._toolchain;
+		return this.configuration.get<string>('red.redPath', '');
 	}
 
 	public get redConsole(): string {
-		return this._redConsole;
+		return getRedConsole(false);
 	}
 
 	public get redGuiConsole(): string {
-		return this._redGuiConsole;
+		return getRedConsole(true);
 	}
 
 	public get redWorkSpace(): string {
-		return this._buildDir;
+		return this.configuration.get<string>('red.buildDir', '');
 	}
 
 	private readonly configuration: WorkspaceConfiguration;
-	private readonly _autoComplete: boolean;
-	private readonly _redConsole: string;
-	private readonly _redGuiConsole: string;
-	private readonly _toolchain: string;
-	private readonly _buildDir: string;
 
 	constructor() {
+		if (RedConfiguration.redConfigs) {
+			throw new Error('Singleton class, Use getInstance method');
+		}
 		this.configuration = workspace.getConfiguration();
-		this._redConsole = getRedConsole(false);
-		this._redGuiConsole = getRedConsole(true);
-		this._autoComplete = this.configuration.get<boolean>('red.autoComplete', true);
-		this._toolchain = this.configuration.get<string>('red.redPath', '');
-		this._buildDir = this.configuration.get<string>('red.buildDir', '');
 	}
 }
