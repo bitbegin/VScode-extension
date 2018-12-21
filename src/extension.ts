@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 		debug: { command: config.redConsole, args: [serverModule] }
 	};
 	const clientOptions: vscodelc.LanguageClientOptions = {
-		documentSelector: [{scheme: 'file', language: 'red'}],
+		documentSelector: [{scheme: 'file', language: 'red'}, {scheme: 'file', language: 'reds'}],
 	}
 	let reddClient = new vscodelc.LanguageClient('vscode-red-extension', 'Red Language Server', serverOptions, clientOptions);
 	console.log('Red Language Server is now active!');
