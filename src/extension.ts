@@ -20,10 +20,10 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand("reds.compileGUI", () => redCompileInGuiConsole()));
 	context.subscriptions.push(vscode.commands.registerCommand("red.commandMenu", setCommandMenu));
 
-	let serverModule = path.join(context.asAbsolutePath("."), "redFiles", "completion.red");
+	let serverModule = path.join(context.asAbsolutePath("."), "redFiles", "server.red");
 	const serverOptions: vscodelc.ServerOptions = {
-		run : { command: config.redConsole, args: [serverModule] },
-		debug: { command: config.redConsole, args: [serverModule] }
+		run : { command: config.redConsole, args: [serverModule, "debug-off"]},
+		debug: { command: config.redConsole, args: [serverModule, "debug-on"] }
 	};
 	const clientOptions: vscodelc.LanguageClientOptions = {
 		documentSelector: [{scheme: 'file', language: 'red'}, {scheme: 'file', language: 'reds'}],
