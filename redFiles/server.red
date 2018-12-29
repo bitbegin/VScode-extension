@@ -174,6 +174,34 @@ parse-completions: function [source line column][
 	system-words/get-completions ptr
 ]
 
+CompletionItemKind: [
+	Text			1
+	Method			2
+	Function		3
+	Constructor		4
+	Field			5
+	Variable		6
+	Class			7
+	Interface		8
+	Module			9
+	Property		10
+	Unit			11
+	Value			12
+	Enum			13
+	Keyword			14
+	Snippet			15
+	Color			16
+	File			17
+	Reference		18
+	Folder			19
+	EnumMember		20
+	Constant		21
+	Struct			22
+	Event			23
+	Operator		24
+	TypeParameter	25
+]
+
 on-textDocument-completion: function [params [map!]][
 	line: params/position/line
 	column: params/position/character
@@ -199,13 +227,46 @@ on-textDocument-completion: function [params [map!]][
 			forall items [
 				append comps make map! reduce [
 					'label skip items/1 1
+					'kind CompletionItemKind/File
+				]
+			]
+		]
+		item-type = 'path [
+			forall items [
+				append comps make map! reduce [
+					'label items/1
+					'kind CompletionItemKind/Field
 				]
 			]
 		]
 		true [
 			forall items [
+				type: system-words/get-type to word! items/1
+				kind: case [
+					#"!" = last items/1 [
+						CompletionItemKind/Keyword
+					]
+					op! = type [
+						CompletionItemKind/Operator
+					]
+					any [
+						type = action!
+						type = native!
+						type = function!
+						type = routine!
+					][
+						CompletionItemKind/Function
+					]
+					object! = type [
+						CompletionItemKind/Class
+					]
+					true [
+						CompletionItemKind/Variable
+					]
+				]
 				append comps make map! reduce [
 					'label items/1
+					'kind kind
 				]
 			]
 		]
