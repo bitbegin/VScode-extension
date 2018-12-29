@@ -124,7 +124,7 @@ on-initialize: func [params [map!]][
 			;'documentRangeFormattingProvider true
 			;'documentOnTypeFormattingProvider make map! reduce ['firstTriggerCharacter "{" 'moreTriggerCharacter ""]
 			;'codeActionProvider true
-			'completionProvider make map! reduce ['resolveProvider false 'triggerCharacters ["."]]
+			'completionProvider make map! reduce ['resolveProvider false 'triggerCharacters ["/" "%"]]
 			;'signatureHelpProvider make map! reduce ['triggerCharacters ["."]]
 			;'definitionProvider true
 			;'documentHighlightProvider true
@@ -178,18 +178,39 @@ on-textDocument-completion: function [params [map!]][
 	line: params/position/line
 	column: params/position/character
 	items: parse-completions source-code line column
-	if 1 >= length? items [
-		json-body/result: ""
+	if any [
+		1 >= length? items
+		all [
+			2 = length? items
+			"%" = items/2
+		]
+	][
+		json-body/result: make map! reduce [
+			'isIncomplete true
+		]
 		response
 		exit
 	]
+	item-type: items/1
 	items: next items
 	comps: clear []
-	forall items [
-		append comps make map! reduce [
-			'label items/1
+	case [
+		item-type = 'file [
+			forall items [
+				append comps make map! reduce [
+					'label skip items/1 1
+				]
+			]
+		]
+		true [
+			forall items [
+				append comps make map! reduce [
+					'label items/1
+				]
+			]
 		]
 	]
+
 	json-body/result: make map! reduce [
 		'items comps
 	]
