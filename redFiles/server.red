@@ -3,10 +3,11 @@ Red [
 	Author:  "bitbegin"
 	File: 	 %server.red
 	Tabs:	 4
-	Rights:  "Copyright (C) 2011-2015 Red Foundation. All rights reserved."
+	Rights:  "Copyright (C) 2011-2019 Red Foundation. All rights reserved."
 	License: "BSD-3 - https://github.com/red/red/blob/origin/BSD-3-License.txt"
 ]
 
+do %system-words.red
 do %json.red
 
 logger: none
@@ -92,10 +93,12 @@ lsp-read: func [/local header len bin n str][
 
 dispatch-method: func [method [string!] params][
 	switch method [
-		"initialize"				[on-initialize params]
-		"textDocument/didOpen"		[on-textDocument-didOpen params]
-		"textDocument/didChange"	[on-textDocument-didChange params]
-		"textDocument/completion"	[on-textDocument-completion params]
+		"initialize"					[on-initialize params]
+		"textDocument/didOpen"			[on-textDocument-didOpen params]
+		"textDocument/didChange"		[on-textDocument-didChange params]
+		"textDocument/completion"		[on-textDocument-completion params]
+		;"textDocument/documentSymbol"	[on-textDocument-symbol params]
+		"textDocument/hover"			[on-textDocument-hover params]
 	]
 ]
 
@@ -117,19 +120,19 @@ on-initialize: func [params [map!]][
 			;	'save				make map! reduce ['includeText true]
 			;]
 
-			'documentFormattingProvider true
-			'documentRangeFormattingProvider true
+			;'documentFormattingProvider true
+			;'documentRangeFormattingProvider true
 			;'documentOnTypeFormattingProvider make map! reduce ['firstTriggerCharacter "{" 'moreTriggerCharacter ""]
-			'codeActionProvider true
-			'completionProvider make map! reduce ['resolveProvider true]
+			;'codeActionProvider true
+			'completionProvider make map! reduce ['resolveProvider false 'triggerCharacters ["."]]
 			;'signatureHelpProvider make map! reduce ['triggerCharacters ["."]]
-			'definitionProvider true
-			'documentHighlightProvider true
+			;'definitionProvider true
+			;'documentHighlightProvider true
 			'hoverProvider true
-			'renameProvider true
-			'documentSymbolProvider true
-			'workspaceSymbolProvider true
-			'referencesProvider true
+			;'renameProvider true
+			;'documentSymbolProvider true
+			;'workspaceSymbolProvider true
+			;'referencesProvider true
 			;'executeCommandProvider make map! reduce ['commands "Red.applyFix"]
 		]
 	]
@@ -148,7 +151,7 @@ on-textDocument-didOpen: func [params [map!] /local result pos start end range d
 ]
 
 on-textDocument-didChange: func [params [map!] /local diagnostics][
-	source-code: params/contentChanges
+	source-code: params/contentChanges/1/text
 	json-body/method: "textDocument/publishDiagnostics"
 	json-body/params: make map! reduce [
 		'uri params/textDocument/uri
@@ -157,13 +160,52 @@ on-textDocument-didChange: func [params [map!] /local diagnostics][
 	response
 ]
 
-on-textDocument-completion: func [params [map!]][
+;-- Use the completion function which is used by the red console
+;-- TBD replace it with a sophisticated one
+parse-completions: function [source line column][
+	n: -1
+	until [
+		str: source
+		if source: find/tail source #"^/" [n: n + 1]
+		any [none? source n = line]
+	]
+	line-str: copy/part str column
+	ptr: find/last/tail line-str charset " ^-[](){}':"
+	system-words/get-completions ptr
+]
+
+on-textDocument-completion: function [params [map!]][
+	line: params/position/line
+	column: params/position/character
+	items: parse-completions source-code line column
+	if 1 >= length? items [
+		json-body/result: ""
+		response
+		exit
+	]
+	items: next items
+	comps: clear []
+	forall items [
+		append comps make map! reduce [
+			'label items/1
+		]
+	]
+	json-body/result: make map! reduce [
+		'items comps
+	]
+	response
+]
+
+on-textDocument-hover: func [params [map!]][
 
 ]
 
 init-logger %logger.txt
 write-log mold system/options/args
-unless system/options/args/1 = "debug-on" [
+if all [
+	system/options/args
+	system/options/args/1 <> "debug-on"
+][
 	init-logger none
 ]
 
