@@ -177,7 +177,7 @@ parse-completions: function [source line column][
 		if source: find/tail source #"^/" [n: n + 1]
 		any [none? source n = line]
 	]
-	delimiters: charset " ^-[](){}':"
+	delimiters: charset " ^-[](){}':;"
 	line-str: copy/part str column
 	unless ptr: find/last/tail line-str delimiters [
 		ptr: line-str
@@ -247,7 +247,7 @@ on-textDocument-completion: function [params [map!]][
 		item-type = 'path [
 			forall items [
 				append comps make map! reduce [
-					'label items/1
+					'label find/tail items/1 "/"
 					'kind CompletionItemKind/Field
 				]
 			]
@@ -298,23 +298,22 @@ get-selected-text: function [source line column][
 		if source: find/tail source #"^/" [n: n + 1]
 		any [none? source n = line]
 	]
-	delimiters: charset " ^-[](){}':"
-	write-log str
-	write-log mold column
-	write-log mold str/(column)
-	while [not find delimiters str/(column)][column: column + 1]
-	column: column - 1
-	write-log mold column
+	delimiters: charset " ^-[](){}':;"
+	while [not find delimiters str/(column + 1)][column: column + 1]
 	line-str: copy/part str column
-	write-log line-str
-	find/last/tail line-str delimiters
+	unless ptr: find/last/tail line-str delimiters [
+		ptr: line-str
+	]
+	if slash: find ptr #"/" [
+		ptr: copy/part ptr slash
+	]
+	ptr
 ]
 
 on-textDocument-hover: function [params [map!]][
 	line: params/position/line
 	column: params/position/character
 	word: to word! get-selected-text source-code line column
-	write-log mold word
 	either hstr: system-words/get-word-info word [
 		json-body/result: make map! reduce [
 			'contents hstr
