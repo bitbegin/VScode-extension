@@ -28,9 +28,10 @@ write-newline: does [
 	]
 ]
 
-write-response: func [response][ 
+write-response: func [response][
 	write-stdout "Content-Length: "
 	write-stdout to string! length? response
+	write-newline
 	write-stdout {Content-Type: application/vscode-jsonrpc; charset=utf-8}
 	write-newline write-newline
 	write-stdout response
@@ -108,7 +109,14 @@ TextDocumentSyncKind: [
 	Incremental	2
 ]
 
-on-initialize: func [params [map!]][
+
+on-initialize: function [params [map!]][
+	trigger-chars: [
+		"/" "%"
+		"a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"
+		"A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"
+	]
+
 	json-body/result: make map! reduce [
 		'capabilities make map! reduce [
 			'textDocumentSync TextDocumentSyncKind/Full
@@ -124,7 +132,7 @@ on-initialize: func [params [map!]][
 			;'documentRangeFormattingProvider true
 			;'documentOnTypeFormattingProvider make map! reduce ['firstTriggerCharacter "{" 'moreTriggerCharacter ""]
 			;'codeActionProvider true
-			'completionProvider make map! reduce ['resolveProvider false 'triggerCharacters ["/" "%"]]
+			'completionProvider make map! reduce ['resolveProvider false 'triggerCharacters trigger-chars]
 			;'signatureHelpProvider make map! reduce ['triggerCharacters ["."]]
 			;'definitionProvider true
 			;'documentHighlightProvider true
@@ -169,8 +177,12 @@ parse-completions: function [source line column][
 		if source: find/tail source #"^/" [n: n + 1]
 		any [none? source n = line]
 	]
+	delimiters: charset " ^-[](){}':"
 	line-str: copy/part str column
-	ptr: find/last/tail line-str charset " ^-[](){}':"
+	unless ptr: find/last/tail line-str delimiters [
+		ptr: line-str
+	]
+	if any [none? ptr empty? ptr][return []]
 	system-words/get-completions ptr
 ]
 
@@ -215,6 +227,7 @@ on-textDocument-completion: function [params [map!]][
 	][
 		json-body/result: make map! reduce [
 			'isIncomplete true
+			'items []
 		]
 		response
 		exit
@@ -278,8 +291,38 @@ on-textDocument-completion: function [params [map!]][
 	response
 ]
 
-on-textDocument-hover: func [params [map!]][
+get-selected-text: function [source line column][
+	n: -1
+	until [
+		str: source
+		if source: find/tail source #"^/" [n: n + 1]
+		any [none? source n = line]
+	]
+	delimiters: charset " ^-[](){}':"
+	write-log str
+	write-log mold column
+	write-log mold str/(column)
+	while [not find delimiters str/(column)][column: column + 1]
+	column: column - 1
+	write-log mold column
+	line-str: copy/part str column
+	write-log line-str
+	find/last/tail line-str delimiters
+]
 
+on-textDocument-hover: function [params [map!]][
+	line: params/position/line
+	column: params/position/character
+	word: to word! get-selected-text source-code line column
+	write-log mold word
+	either hstr: system-words/get-word-info word [
+		json-body/result: make map! reduce [
+			'contents hstr
+		]
+	][
+		json-body/result: ""
+	]
+	response
 ]
 
 init-logger %logger.txt
