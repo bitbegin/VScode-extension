@@ -33,12 +33,26 @@
             {
                 "id": "red",
                 "aliases": ["Red", "red"],
-                "extensions": [".red"]
+                "extensions": [".red"],
+                "configuration": "./red.configuration.json"
             },
             {
                 "id": "reds",
                 "aliases": ["Reds", "reds"],
-                "extensions": [".reds"]
+                "extensions": [".reds"],
+                "configuration": "./red.configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "red",
+                "scopeName": "source.red",
+                "path": "./syntaxes/Red.tmLanguage.json"
+            },
+            {
+                "language": "reds",
+                "scopeName": "source.reds",
+                "path": "./syntaxes/Red.tmLanguage.json"
             }
         ],
         "commands": [
