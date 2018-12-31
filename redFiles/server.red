@@ -100,6 +100,7 @@ dispatch-method: func [method [string!] params][
 		"textDocument/completion"		[on-textDocument-completion params]
 		;"textDocument/documentSymbol"	[on-textDocument-symbol params]
 		"textDocument/hover"			[on-textDocument-hover params]
+		"completionItem/resolve"		[on-completionItem-resolve params]
 	]
 ]
 
@@ -132,7 +133,7 @@ on-initialize: function [params [map!]][
 			;'documentRangeFormattingProvider true
 			;'documentOnTypeFormattingProvider make map! reduce ['firstTriggerCharacter "{" 'moreTriggerCharacter ""]
 			;'codeActionProvider true
-			'completionProvider make map! reduce ['resolveProvider false 'triggerCharacters trigger-chars]
+			'completionProvider make map! reduce ['resolveProvider true 'triggerCharacters trigger-chars]
 			;'signatureHelpProvider make map! reduce ['triggerCharacters ["."]]
 			;'definitionProvider true
 			;'documentHighlightProvider true
@@ -214,6 +215,33 @@ CompletionItemKind: [
 	TypeParameter	25
 ]
 
+get-completion-kind: function [text [string!]][
+	if empty? text [return CompletionItemKind/Text]
+	type: system-words/get-type to word! text
+	kind: case [
+		#"!" = last text [
+			CompletionItemKind/Keyword
+		]
+		op! = type [
+			CompletionItemKind/Operator
+		]
+		any [
+			type = action!
+			type = native!
+			type = function!
+			type = routine!
+		][
+			CompletionItemKind/Function
+		]
+		object! = type [
+			CompletionItemKind/Class
+		]
+		true [
+			CompletionItemKind/Variable
+		]
+	]
+]
+
 on-textDocument-completion: function [params [map!]][
 	line: params/position/line
 	column: params/position/character
@@ -254,29 +282,7 @@ on-textDocument-completion: function [params [map!]][
 		]
 		true [
 			forall items [
-				type: system-words/get-type to word! items/1
-				kind: case [
-					#"!" = last items/1 [
-						CompletionItemKind/Keyword
-					]
-					op! = type [
-						CompletionItemKind/Operator
-					]
-					any [
-						type = action!
-						type = native!
-						type = function!
-						type = routine!
-					][
-						CompletionItemKind/Function
-					]
-					object! = type [
-						CompletionItemKind/Class
-					]
-					true [
-						CompletionItemKind/Variable
-					]
-				]
+				kind: get-completion-kind items/1
 				append comps make map! reduce [
 					'label items/1
 					'kind kind
@@ -316,10 +322,27 @@ on-textDocument-hover: function [params [map!]][
 	word: to word! get-selected-text source-code line column
 	either hstr: system-words/get-word-info word [
 		json-body/result: make map! reduce [
-			'contents hstr
+			'contents rejoin ["```^/" hstr "^/```"]
 		]
 	][
 		json-body/result: ""
+	]
+	response
+]
+
+on-completionItem-resolve: function [params [map!]][
+	text: params/label
+	kind: get-completion-kind text
+	hstr: make string! 30
+	unless empty? text [
+		word: to word! text
+		hstr: system-words/get-word-info word
+	]
+
+	json-body/result: make map! reduce [
+		'label text
+		'kind kind
+		'documentation hstr
 	]
 	response
 ]
