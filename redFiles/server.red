@@ -333,10 +333,13 @@ on-textDocument-hover: function [params [map!]][
 on-completionItem-resolve: function [params [map!]][
 	text: params/label
 	kind: get-completion-kind text
-	hstr: make string! 30
-	unless empty? text [
+	hstr: either empty? text [""][
 		word: to word! text
-		hstr: system-words/get-word-info word
+		either find system-words/base-types word [
+			rejoin [text " is a base datatype!"]
+		][
+			system-words/get-word-info word
+		]
 	]
 
 	json-body/result: make map! reduce [
