@@ -1,65 +1,114 @@
-# redlangserver README
+# Red
 
-This is the README for your extension "redlangserver". After writing up a brief description, we recommend including the following sections.
+An extension with rich support for the [Red language](https://www.red-lang.org/), with features including the following and more:
 
-## Features
+* Intellisense (autocompletion)
+* Signature Help
+* Interpret or compile Red source file
+* Snippets
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Quick Start
 
-For example if there is an image subfolder under your extension project workspace:
+* Install the extension
+* If [Red](http://www.red-lang.org/p/download.html) is aleady installed (Note: For Windows user, need to run ```red.exe --cli``` first)
 
-\!\[feature X\]\(images/feature-x.png\)
+  You're ready to use it.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+* Turn off the Auto Completion
 
-## Requirements
+  You can turn off the autocompletion in the **User or Workspace Settings file (settings.json)** as follows.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+  ```
+  "red.autocomplete": false
+  ```
 
-## Extension Settings
+## Compile Red Source File
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+For compiling Red source file, you need to configure the path to the Red toolchain in the **User or Workspace Settings file (settings.json)** as follows.
 
-For example:
+* Specify the full path of the red toolchain
 
-This extension contributes the following settings:
+  ```
+  "red.redPath": "/home/user1/tools/red-latest"
+  ```
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* Relative to `${workspaceRoot}`, where `${workspaceRoot}` resolves to the current work space (project) directory.
 
-## Known Issues
+  ```
+  "red.redPath": "${workspaceRoot}/toolchain/red"
+  ```
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+You can also configure the directory for output files of the compiler. The current work space (project) directory is used by default.
 
-## Release Notes
+(**Note**: If no work space directory, the output files are in the same folder as the Red source file.)
 
-Users appreciate release notes as you update your extension.
+* Specify the full path
 
-### 1.0.0
+  ```
+  "red.buildDir": "/home/user1/debug"
+  ```
 
-Initial release of ...
+* Relative to `${workspaceRoot}`
 
-### 1.0.1
+  ```
+  "red.buildDir": "${workspaceRoot}/build/debug"
+  ```
 
-Fixed issue #.
+If you are using Linux and prefer to use the Windows version of Red through Wine until GUI support is available for Linux, you can point `red.redPath` to a small [shell script](https://github.com/red/red/wiki/Visual-Studio-Code-Plugin#running-red-through-wine-on-linux).
 
-### 1.1.0
+## Shortcuts
 
-Added features X, Y, and Z.
+| Key                       | Command                    | Command id      |
+| :------------------------ | -------------------------- | --------------- |
+| <kbd>F6</kbd>             | Interpret Current Red File | red.interpret   |
+| <kbd>F7</kbd>             | Compile Current Red File   | red.compile     |
+| <kbd>Ctrl+K Ctrl+M</kbd>  | Show Red Command Menu      | red.commandMenu |
 
------------------------------------------------------------------------------------------------------------
+## Configurations
 
-## Working with Markdown
+The following Visual Studio Code settings are available for the Red extension.  These can be set in user preferences or workspace settings.
 
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+```javascript
+{
+    // Path to Red toolchain
+    "red.redPath": "",
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
+    // Directory to put compiling result of Red Source file.
+    "red.buildDir": "",
 
-### For more information
+    // Whether to enable or disable autocompletion.
+    "red.autoComplete": true
+}
+```
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+The following commands are available for the Red extension. These can be associated with keyboard shortcuts via the `keybindings.json` file.
+* To configure keyboard shortcuts the way you want, go to the menu under **File > Preferences > Keyboard Shortcuts**. (**Code > Preferences > Keyboard Shortcuts** on Mac)
 
-**Enjoy!**
+```javascript
+[
+    { "key": "f6",                    "command": "red.interpret" },
+    { "key": "f7",                    "command": "red.compile" },
+    { "key": "ctrl+k ctrl+m",         "command": "red.commandMenu" },
+    { "key": "",                      "command": "red.interpretGUI" },
+    { "key": "",                      "command": "red.compileGUI" }
+]
+```
+
+## [Issues, Feature Requests and Contributions](https://github.com/red/VScode-extension/issues)
+
+* Contributions are always welcome. Fork it, modify it and create a pull request.
+  + Details on contributing can be found [here](https://github.com/red/VScode-extension/wiki/Contribution) 
+* Any and all feedback is appreciated and welcome.
+  * Please feel free to [add suggestions here](https://github.com/red/VScode-extension/issues)
+
+![Image of General Features](https://raw.githubusercontent.com/red/VScode-extension/master/images/general.gif)
+
+![Image of Red Command Menu](https://raw.githubusercontent.com/red/VScode-extension/master/images/redmenu.gif)
+
+## Source
+
+[Github](https://github.com/red/VScode-extension)
+​                
+## License
+
+[BSL-1.0](https://raw.githubusercontent.com/red/VScode-extension/master/LICENSE)
