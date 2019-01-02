@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand("red.commandMenu", setCommandMenu));
 
 	console.log("Red console path: ", config.redConsole)
-	let serverModule = path.join(context.asAbsolutePath("."), "redFiles", "server.red");
+	let serverModule = path.join(context.asAbsolutePath("."), "server", "server.red");
 	const serverOptions: vscodelc.ServerOptions = {
 		run : { command: config.redConsole, args: [serverModule, "debug-off"]},
 		debug: { command: config.redConsole, args: [serverModule, "debug-on"] }
