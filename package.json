@@ -32,14 +32,24 @@
         "languages": [
             {
                 "id": "red",
-                "aliases": ["Red", "red"],
-                "extensions": [".red"],
+                "aliases": [
+                    "Red",
+                    "red"
+                ],
+                "extensions": [
+                    ".red"
+                ],
                 "configuration": "./red.configuration.json"
             },
             {
                 "id": "reds",
-                "aliases": ["Reds", "reds"],
-                "extensions": [".reds"]
+                "aliases": [
+                    "Reds",
+                    "reds"
+                ],
+                "extensions": [
+                    ".reds"
+                ]
             }
         ],
         "commands": [
@@ -80,47 +90,62 @@
             }
         ],
         "keybindings": [
-            {"command": "red.interpret",    "key": "F6"},
-            {"command": "red.compile",      "key": "F7"},
-            {"command": "reds.interpret",    "key": "F6"},
-            {"command": "reds.compile",      "key": "F7"},
-            {"command": "red.commandMenu",  "key": "ctrl+k ctrl+m"}
+            {
+                "command": "red.interpret",
+                "key": "F6"
+            },
+            {
+                "command": "red.compile",
+                "key": "F7"
+            },
+            {
+                "command": "reds.interpret",
+                "key": "F6"
+            },
+            {
+                "command": "reds.compile",
+                "key": "F7"
+            },
+            {
+                "command": "red.commandMenu",
+                "key": "ctrl+k ctrl+m"
+            }
         ],
         "menus": {
-          "editor/context": [
-            {
-              "when": "resourceLangId == red",
-              "command": "red.interpret",
-              "group": "Red"
-            },
-            {
-              "when": "resourceLangId == red",
-              "command": "red.compile",
-              "group": "Red"
-            },
-            {
-                "when": "resourceLangId == reds",
-                "command": "reds.compile",
-                "group": "Red/System"
-            }
-          ],
-          "explorer/context": [
-            {
-              "when": "resourceLangId == red",
-              "command": "red.interpret",
-              "group": "Red"
-            },
-            {
-              "when": "resourceLangId == red",
-              "command": "red.compile",
-              "group": "Red"
-            },
-            {
-                "when": "resourceLangId == reds",
-                "command": "reds.compile",
-                "group": "Red/System"
-            }
-          ]
+            "editor/context": [
+                {
+                    "when": "resourceLangId == red",
+                    "command": "red.interpret",
+                    "group": "Red"
+                },
+                {
+                    "when": "resourceLangId == red",
+                    "command": "red.compile",
+                    "group": "Red"
+                },
+                {
+                    "when": "resourceLangId == reds",
+                    "command": "reds.compile",
+                    "group": "Red/System"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "when": "resourceLangId == red",
+                    "command": "red.interpret",
+                    "group": "Red"
+                },
+                {
+                    "when": "resourceLangId == red",
+                    "command": "red.compile",
+                    "group": "Red"
+                },
+                {
+                    "when": "resourceLangId == reds",
+                    "command": "reds.compile",
+                    "group": "Red/System"
+                }
+            ]
         },
         "configuration": {
             "type": "object",
