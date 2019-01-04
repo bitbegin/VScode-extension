@@ -183,6 +183,17 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Whether to enable or disable autocompletion."
+                },
+                "vscode-red-extension.trace.server": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "description": "Traces the communication between VS Code and the language server."
                 }
             }
         }
