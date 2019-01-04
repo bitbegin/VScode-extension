@@ -52,6 +52,13 @@
                 ]
             }
         ],
+        "grammars": [
+            {
+                "language": "red",
+                "scopeName": "source.red",
+                "path": "./syntaxes/Red.tmLanguage.json"
+            }
+        ],
         "commands": [
             {
                 "command": "red.commandMenu",
