@@ -59,13 +59,6 @@
                 "path": "./syntaxes/Red.tmLanguage.json"
             }
         ],
-        "snippets": [
-            {
-                "language": "red",
-                "scopeName": "source.red",
-                "path": "./snippets/red.json"
-            }
-        ],
         "commands": [
             {
                 "command": "red.commandMenu",
