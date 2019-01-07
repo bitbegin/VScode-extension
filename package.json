@@ -1,8 +1,10 @@
 {
-    "name": "redlangserver",
-    "displayName": "RedLangServer",
-    "description": "Red language server",
-    "version": "0.0.1",
+    "name": "red",
+    "displayName": "Red",
+    "description": "Syntax Coloring, Intellisense, Snippets and more",
+    "version": "0.3.0",
+    "publisher": "vscode-test",
+    "license": "BSL-1.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/red/VScode-extension"
