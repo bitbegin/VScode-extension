@@ -57,6 +57,10 @@ export class RedConfiguration {
 		return this.configuration.get<boolean>('red.autoComplete', true);
 	}
 
+	public get needRlsDebug(): boolean {
+		return this.configuration.get<boolean>('red.rls-debug', false);
+	}
+
 	public get redToolChain(): string {
 		return this.configuration.get<string>('red.redPath', '');
 	}

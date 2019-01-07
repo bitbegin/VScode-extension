@@ -22,8 +22,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 	console.log("Red console path: ", config.redConsole)
 	let serverModule = path.join(context.asAbsolutePath("."), "server", "server.red");
+	let needlog = "debug-off";
+	if (config.needRlsDebug) {
+		needlog = "debug-on";
+	}
 	const serverOptions: vscodelc.ServerOptions = {
-		run : { command: config.redConsole, args: [serverModule, "debug-off"]},
+		run : { command: config.redConsole, args: [serverModule, needlog]},
 		debug: { command: config.redConsole, args: [serverModule, "debug-on"] }
 	};
 	const clientOptions: vscodelc.LanguageClientOptions = {

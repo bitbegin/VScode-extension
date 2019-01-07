@@ -185,6 +185,11 @@
                     "default": true,
                     "description": "Whether to enable or disable autocompletion."
                 },
+                "red.rls-debug": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to enable or disable 'Red language server' debug."
+                },
                 "vscode-red-extension.trace.server": {
                     "scope": "window",
                     "type": "string",
