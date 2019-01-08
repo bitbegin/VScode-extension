@@ -2,7 +2,7 @@
     "name": "red",
     "displayName": "Red",
     "description": "Syntax Coloring, Intellisense, Snippets and more",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "publisher": "vscode-test",
     "license": "BSL-1.0",
     "repository": {
