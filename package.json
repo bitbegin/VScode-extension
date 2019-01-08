@@ -17,6 +17,8 @@
         "vscode": "^1.30.0"
     },
     "categories": [
+        "Programming Languages",
+        "Snippets",
         "Other"
     ],
     "activationEvents": [
@@ -59,6 +61,12 @@
                 "language": "red",
                 "scopeName": "source.red",
                 "path": "./syntaxes/Red.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "red",
+                "path":     "./snippets/red.json"
             }
         ],
         "commands": [
