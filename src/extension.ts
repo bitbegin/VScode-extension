@@ -26,9 +26,15 @@ export function activate(context: vscode.ExtensionContext) {
 	if (config.needRlsDebug) {
 		needlog = "debug-on";
 	}
+	let autoCompletion = "auto-off";
+	if (config.isAutoComplete) {
+		autoCompletion = "auto-on";
+	}
+	console.log(needlog);
+	console.log(autoCompletion);
 	const serverOptions: vscodelc.ServerOptions = {
-		run : { command: config.redConsole, args: [serverModule, needlog]},
-		debug: { command: config.redConsole, args: [serverModule, "debug-on"] }
+		run : { command: config.redConsole, args: [serverModule, needlog, autoCompletion]},
+		debug: { command: config.redConsole, args: [serverModule, "debug-on", autoCompletion] }
 	};
 	const clientOptions: vscodelc.LanguageClientOptions = {
 		documentSelector: [{scheme: 'file', language: 'red'}],
