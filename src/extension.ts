@@ -43,7 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 	reddClient = new vscodelc.LanguageClient('vscode-red-extension', 'Red Language Server', serverOptions, clientOptions);
 	console.log('Red Language Server is now active!');
-	reddClient.start();
+	context.subscriptions.push(reddClient.start());
 }
 
 // this method is called when your extension is deactivated
