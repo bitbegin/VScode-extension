@@ -7,6 +7,8 @@ import {redRunInConsole, redRunInGuiConsole, redCompileInConsole, redCompileInGu
 import * as vscodelc from 'vscode-languageclient';
 import * as path from 'path';
 
+let reddClient: vscodelc.LanguageClient;
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -39,11 +41,15 @@ export function activate(context: vscode.ExtensionContext) {
 	const clientOptions: vscodelc.LanguageClientOptions = {
 		documentSelector: [{scheme: 'file', language: 'red'}],
 	}
-	let reddClient = new vscodelc.LanguageClient('vscode-red-extension', 'Red Language Server', serverOptions, clientOptions);
+	reddClient = new vscodelc.LanguageClient('vscode-red-extension', 'Red Language Server', serverOptions, clientOptions);
 	console.log('Red Language Server is now active!');
-	context.subscriptions.push(reddClient.start());
+	reddClient.start();
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
+export function deactivate(): Thenable<void> | undefined {
+	if (!reddClient) {
+		return undefined;
+	}
+	return reddClient.stop();
 }
