@@ -2,7 +2,7 @@
     "name": "red",
     "displayName": "Red",
     "description": "Syntax Coloring, Intellisense, Snippets and more",
-    "version": "0.3.6",
+    "version": "0.3.7",
     "publisher": "vscode-test",
     "license": "BSL-1.0",
     "repository": {
@@ -16,6 +16,10 @@
     "engines": {
         "vscode": "^1.30.0"
     },
+    "keywords": [
+        "Red",
+        "Red/System"
+    ],
     "categories": [
         "Programming Languages",
         "Snippets",
@@ -61,12 +65,6 @@
                 "language": "red",
                 "scopeName": "source.red",
                 "path": "./syntaxes/Red.tmLanguage.json"
-            }
-        ],
-        "snippets": [
-            {
-                "language": "red",
-                "path":     "./snippets/red.json"
             }
         ],
         "commands": [
