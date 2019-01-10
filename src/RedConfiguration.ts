@@ -77,6 +77,10 @@ export class RedConfiguration {
 		return this.configuration.get<string>('red.buildDir', '');
 	}
 
+	public get allConfigs(): any {
+		return this.configuration.get('red', {}) as any;
+	}
+
 	private readonly configuration: WorkspaceConfiguration;
 
 	constructor() {

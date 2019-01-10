@@ -191,7 +191,7 @@
                     "default": false,
                     "description": "Whether to enable or disable 'Red language server' debug."
                 },
-                "vscode-red-extension.trace.server": {
+                "red.server.trace.server": {
                     "scope": "window",
                     "type": "string",
                     "enum": [

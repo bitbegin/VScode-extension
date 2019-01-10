@@ -28,20 +28,19 @@ export function activate(context: vscode.ExtensionContext) {
 	if (config.needRlsDebug) {
 		needlog = "debug-on";
 	}
-	let autoCompletion = "auto-off";
-	if (config.isAutoComplete) {
-		autoCompletion = "auto-on";
-	}
 	console.log(needlog);
-	console.log(autoCompletion);
 	const serverOptions: vscodelc.ServerOptions = {
-		run : { command: config.redConsole, args: [serverModule, needlog, autoCompletion]},
-		debug: { command: config.redConsole, args: [serverModule, "debug-on", autoCompletion] }
+		run : { command: config.redConsole, args: [serverModule, needlog]},
+		debug: { command: config.redConsole, args: [serverModule, "debug-on"] }
 	};
 	const clientOptions: vscodelc.LanguageClientOptions = {
 		documentSelector: [{scheme: 'file', language: 'red'}],
+		initializationOptions: config.allConfigs || {},
+		synchronize: {
+			configurationSection: 'red'
+		}
 	}
-	reddClient = new vscodelc.LanguageClient('vscode-red-extension', 'Red Language Server', serverOptions, clientOptions);
+	reddClient = new vscodelc.LanguageClient('red.server', 'Red Language Server', serverOptions, clientOptions);
 	console.log('Red Language Server is now active!');
 	context.subscriptions.push(reddClient.start());
 }
