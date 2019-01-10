@@ -29,19 +29,27 @@ function getRedConsole(gui: boolean) {
 	try {
 		let files = fs.readdirSync(preBuiltPath);
 		let _console = '';
-		let startsWith = 'console';
-		if (gui) {startsWith = 'gui-console'}
+		let startsWith = 'console-';
+		if (gui) {startsWith = 'gui-console-'}
 		for (let i in files) {
 			let name = files[i];
 			let ext = path.extname(name);
-			let console_path = path.join(preBuiltPath, name);
 			if (name.startsWith(startsWith) && (ext == '.exe' || ext == '')) {
-				if (_console < console_path) {
-					_console = console_path
+				if (_console == '') {
+					_console = name;
+				} else {
+					let stamps1 = path.basename(_console, ext).split("-");
+					let stamps2 = path.basename(name, ext).split("-");
+					for (let j in stamps2) {
+						if (+stamps1[j] < +stamps2[j]) {
+							_console = name;
+							break;
+						}
+					}
 				}
 			}
 		}
-		return _console;
+		return path.join(preBuiltPath, _console);
 	}
 	catch (err) {
 		return '';
