@@ -2,7 +2,7 @@
     "name": "red",
     "displayName": "Experimental Support for Red Language",
     "description": "Syntax Coloring, Intellisense, Snippets and more",
-    "version": "0.3.12",
+    "version": "0.3.13",
     "publisher": "vscode-test",
     "license": "BSL-1.0",
     "repository": {
@@ -16,15 +16,6 @@
     "engines": {
         "vscode": "^1.30.0"
     },
-    "keywords": [
-        "Red",
-        "Red/System"
-    ],
-    "categories": [
-        "Programming Languages",
-        "Snippets",
-        "Other"
-    ],
     "activationEvents": [
         "onLanguage:red",
         "onLanguage:reds",
