@@ -1,8 +1,8 @@
 {
     "name": "red",
-    "displayName": "Red",
+    "displayName": "Experimental Support for Red Language",
     "description": "Syntax Coloring, Intellisense, Snippets and more",
-    "version": "0.3.11",
+    "version": "0.3.12",
     "publisher": "vscode-test",
     "license": "BSL-1.0",
     "repository": {
