@@ -91,6 +91,10 @@ The following commands are available for the Red extension. These can be associa
 * Any and all feedback is appreciated and welcome.
   * Please feel free to [add suggestions here](https://github.com/red/VScode-extension/issues)
 
+![Image of Completions](https://raw.githubusercontent.com/red/VScode-extension/master/images/completion.gif)
+
+![Image of Goto Definition](https://raw.githubusercontent.com/red/VScode-extension/master/images/goto-definition.gif)
+
 ![Image of General Features](https://raw.githubusercontent.com/red/VScode-extension/master/images/general.gif)
 
 ![Image of Red Command Menu](https://raw.githubusercontent.com/red/VScode-extension/master/images/redmenu.gif)
