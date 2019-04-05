@@ -2,7 +2,7 @@
     "name": "red",
     "displayName": "Experimental Support for Red Language",
     "description": "Syntax Coloring, Intellisense, Snippets and more",
-    "version": "0.3.57",
+    "version": "0.3.58",
     "publisher": "vscode-test",
     "license": "BSL-1.0",
     "homepage": "https://github.com/red/VScode-extension/blob/master/README.md",
@@ -171,8 +171,8 @@
                 },
                 "red.excludedPath": {
                     "type": "string",
-                    "default": "tests/",
-                    "description": "sub-folders be excluded"
+                    "default": "tests/;quick-test/;system/tests/",
+                    "description": "sub-folders be excluded, default value is for Red source code"
                 },
                 "red.buildDir": {
                     "type": "string",
